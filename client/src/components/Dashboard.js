@@ -6,6 +6,9 @@ const Dashboard = ({ trafficData }) => {
   const [analytics, setAnalytics] = useState(null);
   const [loading, setLoading] = useState(true);
 
+  // Base API URL (from environment variable)
+  const API_BASE_URL = process.env.REACT_APP_API_URL;
+
   useEffect(() => {
     fetchAnalytics();
     const interval = setInterval(fetchAnalytics, 5000);
@@ -14,7 +17,7 @@ const Dashboard = ({ trafficData }) => {
 
   const fetchAnalytics = async () => {
     try {
-      const response = await axios.get('http://localhost:5000/api/analytics/overview');
+      const response = await axios.get(`${API_BASE_URL}/api/analytics/overview`);
       setAnalytics(response.data);
       setLoading(false);
     } catch (error) {
@@ -96,19 +99,34 @@ const Dashboard = ({ trafficData }) => {
           <h3>Congestion Levels</h3>
           <div className="congestion-levels">
             <div className="congestion-item">
-              <div className="congestion-bar low" style={{ width: `${(analytics.congestionLevels.low / analytics.totalSignals) * 100}%` }}></div>
+              <div
+                className="congestion-bar low"
+                style={{ width: `${(analytics.congestionLevels.low / analytics.totalSignals) * 100}%` }}
+              ></div>
               <span>Low: {analytics.congestionLevels.low}</span>
             </div>
+
             <div className="congestion-item">
-              <div className="congestion-bar medium" style={{ width: `${(analytics.congestionLevels.medium / analytics.totalSignals) * 100}%` }}></div>
+              <div
+                className="congestion-bar medium"
+                style={{ width: `${(analytics.congestionLevels.medium / analytics.totalSignals) * 100}%` }}
+              ></div>
               <span>Medium: {analytics.congestionLevels.medium}</span>
             </div>
+
             <div className="congestion-item">
-              <div className="congestion-bar high" style={{ width: `${(analytics.congestionLevels.high / analytics.totalSignals) * 100}%` }}></div>
+              <div
+                className="congestion-bar high"
+                style={{ width: `${(analytics.congestionLevels.high / analytics.totalSignals) * 100}%` }}
+              ></div>
               <span>High: {analytics.congestionLevels.high}</span>
             </div>
+
             <div className="congestion-item">
-              <div className="congestion-bar severe" style={{ width: `${(analytics.congestionLevels.severe / analytics.totalSignals) * 100}%` }}></div>
+              <div
+                className="congestion-bar severe"
+                style={{ width: `${(analytics.congestionLevels.severe / analytics.totalSignals) * 100}%` }}
+              ></div>
               <span>Severe: {analytics.congestionLevels.severe}</span>
             </div>
           </div>
@@ -128,21 +146,26 @@ const Dashboard = ({ trafficData }) => {
                     {signal.currentState.toUpperCase()}
                   </div>
                 </div>
+
                 <div className="signal-details">
                   <p><strong>Signal ID:</strong> {signal.signalId}</p>
                   <p><strong>Density:</strong> {signal.trafficDensity.toFixed(1)}%</p>
                   <p><strong>Vehicles:</strong> {signalData?.vehicleCount || 0}</p>
                   <p><strong>Speed:</strong> {signalData?.averageSpeed.toFixed(1) || 0} km/h</p>
-                  <p><strong>Congestion:</strong> <span className={`congestion-badge ${signalData?.congestionLevel}`}>{signalData?.congestionLevel || 'low'}</span></p>
+                  <p><strong>Congestion:</strong> 
+                    <span className={`congestion-badge ${signalData?.congestionLevel}`}>
+                      {signalData?.congestionLevel || 'low'}
+                    </span>
+                  </p>
                 </div>
               </div>
             );
           })}
         </div>
       </div>
+
     </div>
   );
 };
 
 export default Dashboard;
-

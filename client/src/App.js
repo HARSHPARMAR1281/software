@@ -7,7 +7,8 @@ import SignalControl from './components/SignalControl';
 import Analytics from './components/Analytics';
 import './App.css';
 
-const socket = io('http://localhost:5000');
+// FIXED SOCKET.IO URL
+const socket = io(process.env.REACT_APP_API_URL || 'http://localhost:5000');
 
 function App() {
   const [trafficData, setTrafficData] = useState(null);
@@ -73,4 +74,3 @@ function App() {
 }
 
 export default App;
-
