@@ -4,7 +4,6 @@
   "description": "Backend server for traffic management system",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon index.js",
     "start": "node index.js"
   },
   "dependencies": {
@@ -15,9 +14,5 @@
     "mongoose": "^7.5.0",
     "bcryptjs": "^2.4.3",
     "jsonwebtoken": "^9.0.2"
-  },
-  "devDependencies": {
-    "nodemon": "^3.0.1"
   }
 }
-
