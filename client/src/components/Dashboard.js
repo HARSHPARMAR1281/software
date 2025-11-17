@@ -6,8 +6,10 @@ const Dashboard = ({ trafficData }) => {
   const [analytics, setAnalytics] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // Base API URL (from environment variable)
-  const API_BASE_URL = process.env.REACT_APP_API_URL;
+  // Base API URL (works in Vercel + locally)
+  const API_BASE_URL =
+    process.env.REACT_APP_API_URL ||
+    "http://localhost:5000";
 
   useEffect(() => {
     fetchAnalytics();
@@ -26,18 +28,14 @@ const Dashboard = ({ trafficData }) => {
     }
   };
 
-  if (loading) {
-    return <div className="loading">Loading...</div>;
-  }
-
-  if (!trafficData || !analytics) {
-    return <div className="loading">Waiting for data...</div>;
-  }
+  if (loading) return <div className="loading">Loading...</div>;
+  if (!trafficData || !analytics) return <div className="loading">Waiting for data...</div>;
 
   return (
     <div className="dashboard">
       <h2>Traffic Dashboard</h2>
-      
+
+      {/* ------- STATS ------- */}
       <div className="stats-grid">
         <div className="stat-card">
           <div className="stat-icon">🚦</div>
@@ -76,6 +74,7 @@ const Dashboard = ({ trafficData }) => {
         </div>
       </div>
 
+      {/* ------- SIGNAL STATES ------- */}
       <div className="dashboard-grid">
         <div className="dashboard-card">
           <h3>Signal States</h3>
@@ -133,6 +132,7 @@ const Dashboard = ({ trafficData }) => {
         </div>
       </div>
 
+      {/* ------- SIGNALS LIST ------- */}
       <div className="dashboard-card">
         <h3>Traffic Signals</h3>
         <div className="signals-list">
@@ -151,8 +151,8 @@ const Dashboard = ({ trafficData }) => {
                   <p><strong>Signal ID:</strong> {signal.signalId}</p>
                   <p><strong>Density:</strong> {signal.trafficDensity.toFixed(1)}%</p>
                   <p><strong>Vehicles:</strong> {signalData?.vehicleCount || 0}</p>
-                  <p><strong>Speed:</strong> {signalData?.averageSpeed.toFixed(1) || 0} km/h</p>
-                  <p><strong>Congestion:</strong> 
+                  <p><strong>Speed:</strong> {signalData?.averageSpeed?.toFixed(1) || 0} km/h</p>
+                  <p><strong>Congestion:</strong>
                     <span className={`congestion-badge ${signalData?.congestionLevel}`}>
                       {signalData?.congestionLevel || 'low'}
                     </span>

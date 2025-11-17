@@ -9,7 +9,10 @@ const SignalControl = ({ trafficData }) => {
   const [timing, setTiming] = useState({ red: 30, yellow: 5, green: 25 });
 
   // Backend URL from environment variable
-  const API_BASE_URL = process.env.REACT_APP_API_URL;
+  // Backend URL from environment variable (with fallback)
+  const API_BASE_URL =
+    process.env.REACT_APP_API_URL || "http://localhost:5000";
+
 
   useEffect(() => {
     if (trafficData && trafficData.signals) {
